@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Northeast Aluminium Logo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;800&family=Roboto+Slab:wght@700&family=Cormorant+Garamond:wght@600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --black: #111111;
+            --gold: #f5b400;
+            --gold-deep: #f08a00;
+            --green: #1f3a2a;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: transparent;
+            font-family: "Montserrat", Arial, Helvetica, sans-serif;
+        }
+
+        /* Logo container (transparent). Change font-size to scale the whole logo. */
+        .logo {
+            font-size: clamp(30px, 9vw, 68px);
+            width: 7.4em;
+            padding: 0.28em 0.3em 0.3em;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* NORTHEAST */
+        .wordmark {
+            font-family: "Montserrat", "Arial Black", Arial, sans-serif;
+            font-weight: 800;
+            font-size: 1em;
+            line-height: 1;
+            letter-spacing: -0.01em;
+            color: var(--black);
+            white-space: nowrap;
+        }
+
+        /* The "A" that holds both triangles */
+        .wordmark .a {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* White triangle */
+        .wordmark .a::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0.3em;
+            /* move triangle up / down */
+            width: 0.46em;
+            /* triangle width */
+            height: 0.56em;
+            /* triangle height */
+            transform: translateX(-50%);
+            background: var(--white);
+            clip-path: polygon(50% 0, 100% 100%, 0 100%);
+            z-index: 1;
+        }
+
+        /* Yellow triangle */
+        .wordmark .a::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0.42em;
+            /* move yellow triangle up / down */
+            width: 0.35em;
+            /* yellow triangle width */
+            height: 0.43em;
+            /* yellow triangle height */
+            transform: translateX(-50%);
+            background: linear-gradient(180deg, var(--gold), var(--gold-deep));
+            clip-path: polygon(50% 0, 100% 100%, 0 100%);
+            z-index: 2;
+        }
+
+        /* ALUMINIUM */
+        .product {
+            margin-top: 0.02em;
+            font-weight: 400;
+            font-size: 0.5em;
+            line-height: 1;
+            letter-spacing: 0.2em;
+            padding-left: 0.2em;
+            /* balances trailing letter-spacing */
+            color: var(--gold);
+            -webkit-text-stroke: 0.02em var(--gold-deep);
+            text-transform: uppercase;
+        }
+
+        /* Dealer & Distributor */
+        .role {
+            margin-top: 0.12em;
+            font-family: "Roboto Slab", Georgia, serif;
+            font-weight: 700;
+            font-size: 0.2em;
+            letter-spacing: 0.14em;
+            padding-left: 0.14em;
+            color: var(--green);
+        }
+
+        /* Divider line */
+        .rule {
+            width: 100%;
+            height: 1px;
+            margin-top: 0.22em;
+            background: linear-gradient(90deg, transparent, #9a9a9a 12%, #9a9a9a 88%, transparent);
+        }
+
+        /* Tagline */
+        .tagline {
+            margin-top: 0.14em;
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-weight: 600;
+            font-size: 0.17em;
+            letter-spacing: 0.2em;
+            padding-left: 0.2em;
+            color: #222;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="logo" role="img"
+        aria-label="Northeast Aluminium — Dealer &amp; Distributor. Dealing with aluminium, steel and fabrication.">
+        <div class="wordmark" aria-hidden="true">NORTHE<span class="a">A</span>ST</div>
+        <div class="product" aria-hidden="true">Aluminium</div>
+        <div class="role" aria-hidden="true">Dealer &amp; Distributor</div>
+        <div class="rule" aria-hidden="true"></div>
+        <div class="tagline" aria-hidden="true">Dealing with Aluminium, Steel &amp; Fabrication</div>
+    </div>
+
+</body>
+
+</html>
