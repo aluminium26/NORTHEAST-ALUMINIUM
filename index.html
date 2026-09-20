@@ -137,44 +137,8 @@
                 <div class="gold-line"></div>
             </div>
 
-            <div class="products-grid">
-                <!-- Card 1 -->
-                <div class="product-card">
-                    <div class="product-img">
-                        <img src="images/products/aluminium-sheets.jpg" alt="Aluminium Sheets">
-                        <span class="material-tag">Aluminium</span>
-                    </div>
-                    <div class="product-body">
-                        <h3>Aluminium Sheets</h3>
-                        <p>Premium grade aluminium sheets in various thicknesses for roofing, cladding & fabrication.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="product-card">
-                    <div class="product-img">
-                        <img src="images/products/aluminium-extrusions.jpg" alt="Aluminium Extrusions">
-                        <span class="material-tag">Aluminium</span>
-                    </div>
-                    <div class="product-body">
-                        <h3>Aluminium Extrusions</h3>
-                        <p>Wide range of profiles & sections for windows, doors, structures and custom designs.</p>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="product-card">
-                    <div class="product-img">
-                        <img src="images/products/ms-plates.jpg" alt="MS Plates & Sheets">
-                        <span class="material-tag">Mild Steel</span>
-                    </div>
-                    <div class="product-body">
-                        <h3>MS Plates & Sheets</h3>
-                        <p>Durable mild steel plates ideal for fabrication, structural work and heavy-duty applications.
-                        </p>
-                    </div>
-                </div>
+            <div class="products-grid" id="featuredProducts">
+                <!-- Loaded by JS from products.json -->
             </div>
 
             <div class="text-center mt-2">
@@ -275,6 +239,47 @@
         title="Chat on WhatsApp">💬</a>
 
     <script src="js/script.js"></script>
+    <script>
+        // Load first 3 products as featured
+        fetch('data/products.json')
+            .then(r => r.json())
+            .then(products => {
+                const container = document.getElementById('featuredProducts');
+                if (!products || products.length === 0) {
+                    container.innerHTML = '<p style="text-align:center;color:#888;">No products yet.</p>';
+                    return;
+                }
+                const featured = products
+                    .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+                    .slice(0, 3);
+
+                const categoryLabels = {
+                    'aluminium': 'Aluminium',
+                    'mild-steel': 'Mild Steel',
+                    'stainless': 'Stainless Steel',
+                    'services': 'Services'
+                };
+
+                container.innerHTML = featured.map(p => `
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="images/products/${p.image}" alt="${p.name}" loading="lazy"
+                                 onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+                            <span class="material-tag">${categoryLabels[p.category] || p.category}</span>
+                        </div>
+                        <div class="product-body">
+                            <h3>${p.name}</h3>
+                            <p>${p.description || ''}</p>
+                            ${p.price ? `<p style="font-weight:600;color:var(--green);margin-top:0.5rem;">₹ ${p.price}</p>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            })
+            .catch(() => {
+                document.getElementById('featuredProducts').innerHTML =
+                    '<p style="text-align:center;color:#888;">Unable to load products.</p>';
+            });
+    </script>
 </body>
 
 </html>
