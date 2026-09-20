@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Northeast Aluminium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #0b3d2e;
+            --gold: #c9a227;
+            --cream: #f7f4ef;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--cream);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', system-ui, sans-serif;
+            padding: 1rem;
+        }
+
+        .login-box {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(11, 61, 46, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .logo-text {
+            text-align: center;
+            margin-bottom: 1.75rem;
+        }
+
+        .logo-text h1 {
+            color: var(--green);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-text p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+            color: var(--green);
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid #e0dbd3;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 0.95rem;
+            background: var(--green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .btn-login:hover {
+            background: #145c45;
+        }
+
+        .error {
+            color: #c0392b;
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .hint {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-box">
+        <div class="logo-text">
+            <h1>Northeast Aluminium</h1>
+            <p>Hi Rana..</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter admin password"
+                    autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn-login">Login</button>
+            <p class="error" id="errorMsg">Incorrect password</p>
+        </form>
+
+
+
+        <script>
+            // ========== CHANGE THIS PASSWORD ==========
+            // Default password: admin123
+            const PASSWORD_HASH = "a2177800e3c78b809eddabc4fc45cf989154b90371a009b44d804bb594a09a46";
+
+            async function sha256(str) {
+                const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+                return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+            }
+
+            if (sessionStorage.getItem("ne_admin_auth") === "true") {
+                window.location.href = "dashboard.html";
+            }
+
+            document.getElementById("loginForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const pwd = document.getElementById("password").value;
+                const hash = await sha256(pwd);
+                const errorMsg = document.getElementById("errorMsg");
+
+                if (hash === PASSWORD_HASH) {
+                    sessionStorage.setItem("ne_admin_auth", "true");
+                    window.location.href = "dashboard.html";
+                } else {
+                    errorMsg.style.display = "block";
+                    errorMsg.textContent = "Incorrect password";
+                }
+            });
+        </script>
+</body>
+
+</html>

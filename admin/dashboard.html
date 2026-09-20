@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Northeast Aluminium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #0b3d2e;
+            --green-light: #145c45;
+            --gold: #c9a227;
+            --cream: #f7f4ef;
+            --danger: #c0392b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--cream);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: #1a1a1a;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            background: var(--green);
+            color: white;
+            padding: 0.9rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .admin-header h1 {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1rem;
+            border: none;
+            border-radius: 7px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--green);
+        }
+
+        .btn-gold:hover {
+            background: #e0c15a;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-green {
+            background: var(--green);
+            color: white;
+        }
+
+        .btn-green:hover {
+            background: var(--green-light);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #a93226;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem 1.25rem 3rem;
+        }
+
+        .status {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            display: block;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 18px rgba(11, 61, 46, 0.06);
+            margin-bottom: 1.75rem;
+        }
+
+        .card h2 {
+            color: var(--green);
+            font-size: 1.2rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+            color: var(--green);
+            font-size: 0.875rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 1.5px solid #e0dbd3;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            background: #faf9f6;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: white;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .image-preview-wrap {
+            margin-top: 0.75rem;
+            display: none;
+        }
+
+        .image-preview-wrap img {
+            max-width: 180px;
+            max-height: 140px;
+            border-radius: 8px;
+            border: 1px solid #e0dbd3;
+            object-fit: cover;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            align-items: center;
+        }
+
+        .toolbar input {
+            flex: 1;
+            min-width: 180px;
+            padding: 0.6rem 0.9rem;
+            border: 1.5px solid #e0dbd3;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .product-list {
+            display: grid;
+            gap: 0.85rem;
+        }
+
+        .product-item {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            background: #faf9f6;
+            padding: 0.9rem;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            transition: border-color 0.2s;
+        }
+
+        .product-item:hover {
+            border-color: #d4cfc5;
+        }
+
+        .product-item img {
+            width: 72px;
+            height: 72px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #e8e4dc;
+            flex-shrink: 0;
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .product-info h3 {
+            margin: 0 0 0.2rem;
+            color: var(--green);
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-info .meta {
+            font-size: 0.8rem;
+            color: #666;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+        }
+
+        .product-info .price {
+            font-weight: 600;
+            color: var(--green);
+            font-size: 0.9rem;
+        }
+
+        .product-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 640px) {
+            .product-actions {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .order-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .order-btns button {
+            background: #e8e4dc;
+            border: none;
+            width: 28px;
+            height: 22px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            color: var(--green);
+        }
+
+        .order-btns button:hover {
+            background: var(--gold);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: #888;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 1rem;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1.75rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal h2 {
+            margin-bottom: 1.25rem;
+            color: var(--green);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            justify-content: flex-end;
+        }
+
+        .download-panel {
+            background: linear-gradient(135deg, #0b3d2e, #145c45);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .download-panel h2 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .download-panel p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-panel .btn {
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-header">
+        <h1>Northeast Aluminium — Admin</h1>
+        <div class="header-actions">
+            <button class="btn btn-outline btn-sm" onclick="openPasswordModal()">Change Password</button>
+            <button class="btn btn-gold btn-sm" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div id="statusMsg" class="status"></div>
+
+        <div class="download-panel">
+            <h2>Export & Update Website <span class="badge" id="productCount">0 products</span></h2>
+            <p>
+                After adding / editing products, click the button below.
+                Download the new <strong>products.json</strong> and any new images, then upload them to your GitHub
+                repo.
+            </p>
+            <button class="btn btn-gold" onclick="exportAll()">⬇ Download products.json + Images</button>
+            <button class="btn btn-outline" onclick="downloadJSONOnly()">⬇ JSON only</button>
+        </div>
+
+        <div class="card">
+            <h2 id="formTitle">Add New Product</h2>
+            <form id="productForm">
+                <input type="hidden" id="editId">
+
+                <div class="form-row">
+                    <div>
+                        <label>Product Name *</label>
+                        <input type="text" id="name" required placeholder="e.g. Aluminium Sheets 3mm">
+                    </div>
+                    <div>
+                        <label>Category *</label>
+                        <select id="category" required>
+                            <option value="">Select category</option>
+                            <option value="aluminium">Aluminium</option>
+                            <option value="mild-steel">Mild Steel</option>
+                            <option value="stainless">Stainless Steel</option>
+                            <option value="services">Services</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:1rem;">
+                    <label>Description</label>
+                    <textarea id="description" placeholder="Short description of the product..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <label>Price (optional)</label>
+                        <input type="text" id="price" placeholder="e.g. 450 / kg or 12,000">
+                    </div>
+                    <div>
+                        <label>Display Order</label>
+                        <input type="number" id="sort_order" min="1" placeholder="Auto if empty">
+                    </div>
+                </div>
+
+                <div style="margin-bottom:1.25rem;">
+                    <label>Product Image *</label>
+                    <input type="file" id="image" accept="image/*">
+                    <div class="image-preview-wrap" id="previewWrap">
+                        <img id="imagePreview" alt="Preview">
+                        <p style="font-size:0.8rem;color:#666;margin-top:0.35rem;" id="imageName"></p>
+                    </div>
+                    <p style="font-size:0.8rem;color:#888;margin-top:0.4rem;">
+                        Recommended: JPG/PNG, under 1 MB. Existing image is kept if you don’t choose a new one while
+                        editing.
+                    </p>
+                </div>
+
+                <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+                    <button type="submit" class="btn btn-gold" id="submitBtn">Add Product</button>
+                    <button type="button" class="btn btn-outline" id="cancelEdit"
+                        style="display:none;color:var(--green);border-color:#ccc;" onclick="resetForm()">Cancel
+                        Edit</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>
+                All Products
+                <span style="font-size:0.85rem;font-weight:500;color:#666;" id="listCount"></span>
+            </h2>
+
+            <div class="toolbar">
+                <input type="text" id="searchInput" placeholder="Search by name or description...">
+                <select id="filterCategory"
+                    style="padding:0.6rem 0.9rem;border:1.5px solid #e0dbd3;border-radius:8px;font-size:0.9rem;background:#faf9f6;">
+                    <option value="all">All Categories</option>
+                    <option value="aluminium">Aluminium</option>
+                    <option value="mild-steel">Mild Steel</option>
+                    <option value="stainless">Stainless Steel</option>
+                    <option value="services">Services</option>
+                </select>
+            </div>
+
+            <div id="productList" class="product-list">
+                <div class="empty-state">Loading products...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal">
+            <h2>Change Admin Password</h2>
+            <p style="font-size:0.9rem;color:#666;margin-bottom:1.25rem;">
+                Because this is a static site, the new password is stored only in this browser session for now.
+                To make it permanent you must update the hash in <code>admin/index.html</code>.
+            </p>
+            <div class="form-group" style="margin-bottom:1rem;">
+                <label>New Password</label>
+                <input type="password" id="newPassword" placeholder="Enter new password">
+            </div>
+            <div class="form-group" style="margin-bottom:1rem;">
+                <label>Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm new password">
+            </div>
+            <div id="pwdResult" style="font-size:0.85rem;margin-bottom:1rem;display:none;"></div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" style="color:#666;border-color:#ccc;"
+                    onclick="closePasswordModal()">Cancel</button>
+                <button class="btn btn-green" onclick="generateNewHash()">Generate Hash & Instructions</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (sessionStorage.getItem("ne_admin_auth") !== "true") {
+            window.location.href = "index.html";
+        }
+
+        function logout() {
+            sessionStorage.removeItem("ne_admin_auth");
+            window.location.href = "index.html";
+        }
+
+        let products = [];
+        let nextId = 1;
+        let pendingImages = {};
+
+        const categoryLabels = {
+            aluminium: "Aluminium",
+            "mild-steel": "Mild Steel",
+            stainless: "Stainless Steel",
+            services: "Services"
+        };
+
+        async function loadProducts() {
+            try {
+                const res = await fetch("../data/products.json?t=" + Date.now());
+                if (!res.ok) throw new Error("Could not load products.json");
+                products = await res.json();
+                products.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+                nextId = products.reduce((max, p) => Math.max(max, p.id || 0), 0) + 1;
+                renderList();
+                updateCounts();
+            } catch (err) {
+                showStatus("Could not load products.json. Starting with empty list.", "info");
+                products = [];
+                renderList();
+            }
+        }
+
+        function renderList() {
+            const list = document.getElementById("productList");
+            const search = document.getElementById("searchInput").value.toLowerCase().trim();
+            const catFilter = document.getElementById("filterCategory").value;
+
+            let filtered = products.filter(p => {
+                const matchCat = catFilter === "all" || p.category === catFilter;
+                const matchSearch = !search ||
+                    p.name.toLowerCase().includes(search) ||
+                    (p.description || "").toLowerCase().includes(search);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                list.innerHTML = `<div class="empty-state">${products.length === 0 ? "No products yet. Add your first product above." : "No products match your search."}</div>`;
+                return;
+            }
+
+            list.innerHTML = filtered.map((p) => {
+                const realIndex = products.findIndex(x => x.id === p.id);
+                const imgSrc = pendingImages[p.id]
+                    ? (typeof pendingImages[p.id] === "string" ? pendingImages[p.id] : URL.createObjectURL(pendingImages[p.id]))
+                    : `../images/products/${p.image}`;
+
+                return `
+          <div class="product-item" data-id="${p.id}">
+            <div class="order-btns">
+              <button onclick="moveUp(${realIndex})" title="Move up">▲</button>
+              <button onclick="moveDown(${realIndex})" title="Move down">▼</button>
+            </div>
+            <img src="${imgSrc}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/72?text=No+Img'">
+            <div class="product-info">
+              <h3>${escapeHtml(p.name)}</h3>
+              <div class="meta">
+                <span>${categoryLabels[p.category] || p.category}</span>
+                <span>Order: ${p.sort_order || "-"}</span>
+                ${p.price ? `<span class="price">₹ ${escapeHtml(p.price)}</span>` : ""}
+              </div>
+              <p style="font-size:0.8rem;color:#888;margin-top:0.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                ${escapeHtml((p.description || "").substring(0, 80))}${(p.description || "").length > 80 ? "…" : ""}
+              </p>
+            </div>
+            <div class="product-actions">
+              <button class="btn btn-sm btn-green" onclick="editProduct(${p.id})">Edit</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button>
+            </div>
+          </div>
+        `;
+            }).join("");
+        }
+
+        function updateCounts() {
+            document.getElementById("productCount").textContent = products.length + " products";
+            document.getElementById("listCount").textContent = "(" + products.length + ")";
+        }
+
+        function escapeHtml(str) {
+            if (!str) return "";
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+
+        const form = document.getElementById("productForm");
+        const imageInput = document.getElementById("image");
+        const previewWrap = document.getElementById("previewWrap");
+        const imagePreview = document.getElementById("imagePreview");
+        const imageName = document.getElementById("imageName");
+
+        imageInput.addEventListener("change", () => {
+            const file = imageInput.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                imagePreview.src = url;
+                imageName.textContent = file.name + " (" + Math.round(file.size / 1024) + " KB)";
+                previewWrap.style.display = "block";
+            } else {
+                previewWrap.style.display = "none";
+            }
+        });
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const editId = document.getElementById("editId").value;
+            const name = document.getElementById("name").value.trim();
+            const category = document.getElementById("category").value;
+            const description = document.getElementById("description").value.trim();
+            const price = document.getElementById("price").value.trim();
+            let sort_order = parseInt(document.getElementById("sort_order").value, 10);
+            const file = imageInput.files[0];
+
+            if (!name || !category) {
+                showStatus("Name and Category are required", "error");
+                return;
+            }
+
+            if (editId) {
+                const idx = products.findIndex(p => p.id == editId);
+                if (idx === -1) return;
+
+                products[idx].name = name;
+                products[idx].category = category;
+                products[idx].description = description;
+                products[idx].price = price;
+                if (!isNaN(sort_order) && sort_order > 0) products[idx].sort_order = sort_order;
+
+                if (file) {
+                    const safeName = makeSafeFilename(file.name, products[idx].id);
+                    products[idx].image = safeName;
+                    pendingImages[products[idx].id] = file;
+                }
+
+                showStatus("Product updated (remember to Export)", "success");
+            } else {
+                if (!file) {
+                    showStatus("Please select an image for new products", "error");
+                    return;
+                }
+
+                if (isNaN(sort_order) || sort_order < 1) {
+                    sort_order = products.length > 0
+                        ? Math.max(...products.map(p => p.sort_order || 0)) + 1
+                        : 1;
+                }
+
+                const id = nextId++;
+                const safeName = makeSafeFilename(file.name, id);
+
+                const newProduct = {
+                    id,
+                    name,
+                    category,
+                    description,
+                    price,
+                    image: safeName,
+                    sort_order
+                };
+
+                products.push(newProduct);
+                pendingImages[id] = file;
+                showStatus("Product added (remember to Export)", "success");
+            }
+
+            products.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+            resetForm();
+            renderList();
+            updateCounts();
+        });
+
+        function makeSafeFilename(original, id) {
+            const ext = original.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+            const base = original
+                .replace(/\.[^.]+$/, "")
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-|-$/g, "")
+                .substring(0, 40) || "product";
+            return `${base}-${id}.${ext}`;
+        }
+
+        function editProduct(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+
+            document.getElementById("editId").value = p.id;
+            document.getElementById("name").value = p.name;
+            document.getElementById("category").value = p.category;
+            document.getElementById("description").value = p.description || "";
+            document.getElementById("price").value = p.price || "";
+            document.getElementById("sort_order").value = p.sort_order || "";
+            document.getElementById("formTitle").textContent = "Edit Product";
+            document.getElementById("submitBtn").textContent = "Update Product";
+            document.getElementById("cancelEdit").style.display = "inline-flex";
+
+            const src = pendingImages[p.id]
+                ? (typeof pendingImages[p.id] === "string" ? pendingImages[p.id] : URL.createObjectURL(pendingImages[p.id]))
+                : `../images/products/${p.image}`;
+            imagePreview.src = src;
+            imageName.textContent = p.image + " (current)";
+            previewWrap.style.display = "block";
+            imageInput.value = "";
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function resetForm() {
+            form.reset();
+            document.getElementById("editId").value = "";
+            document.getElementById("formTitle").textContent = "Add New Product";
+            document.getElementById("submitBtn").textContent = "Add Product";
+            document.getElementById("cancelEdit").style.display = "none";
+            previewWrap.style.display = "none";
+        }
+
+        function deleteProduct(id) {
+            if (!confirm("Delete this product permanently?")) return;
+            products = products.filter(p => p.id !== id);
+            delete pendingImages[id];
+            renderList();
+            updateCounts();
+            showStatus("Product deleted (remember to Export)", "success");
+            if (document.getElementById("editId").value == id) resetForm();
+        }
+
+        function moveUp(index) {
+            if (index <= 0) return;
+            const temp = products[index];
+            products[index] = products[index - 1];
+            products[index - 1] = temp;
+            products.forEach((p, i) => p.sort_order = i + 1);
+            renderList();
+            showStatus("Order updated (remember to Export)", "success");
+        }
+
+        function moveDown(index) {
+            if (index >= products.length - 1) return;
+            const temp = products[index];
+            products[index] = products[index + 1];
+            products[index + 1] = temp;
+            products.forEach((p, i) => p.sort_order = i + 1);
+            renderList();
+            showStatus("Order updated (remember to Export)", "success");
+        }
+
+        async function exportAll() {
+            const jsonStr = JSON.stringify(products, null, 2);
+            downloadBlob(new Blob([jsonStr], { type: "application/json" }), "products.json");
+
+            const imageKeys = Object.keys(pendingImages);
+            if (imageKeys.length === 0) {
+                showStatus("products.json downloaded. No new images to download.", "success");
+                return;
+            }
+
+            showStatus(`Downloading ${imageKeys.length} image(s)...`, "info");
+
+            for (const id of imageKeys) {
+                const fileOrData = pendingImages[id];
+                const product = products.find(p => p.id == id);
+                if (!product) continue;
+
+                if (fileOrData instanceof File) {
+                    downloadBlob(fileOrData, product.image);
+                } else if (typeof fileOrData === "string" && fileOrData.startsWith("data:")) {
+                    const res = await fetch(fileOrData);
+                    const blob = await res.blob();
+                    downloadBlob(blob, product.image);
+                }
+            }
+
+            showStatus("Download complete! Upload products.json to /data/ and images to /images/products/ then push to GitHub.", "success");
+        }
+
+        function downloadJSONOnly() {
+            const jsonStr = JSON.stringify(products, null, 2);
+            downloadBlob(new Blob([jsonStr], { type: "application/json" }), "products.json");
+            showStatus("products.json downloaded.", "success");
+        }
+
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        function openPasswordModal() {
+            document.getElementById("passwordModal").classList.add("show");
+            document.getElementById("newPassword").value = "";
+            document.getElementById("confirmPassword").value = "";
+            document.getElementById("pwdResult").style.display = "none";
+        }
+        function closePasswordModal() {
+            document.getElementById("passwordModal").classList.remove("show");
+        }
+
+        async function generateNewHash() {
+            const pwd = document.getElementById("newPassword").value;
+            const confirm = document.getElementById("confirmPassword").value;
+            const result = document.getElementById("pwdResult");
+
+            if (!pwd || pwd.length < 4) {
+                result.style.display = "block";
+                result.style.color = "#c0392b";
+                result.textContent = "Password must be at least 4 characters.";
+                return;
+            }
+            if (pwd !== confirm) {
+                result.style.display = "block";
+                result.style.color = "#c0392b";
+                result.textContent = "Passwords do not match.";
+                return;
+            }
+
+            const hash = await sha256(pwd);
+            result.style.display = "block";
+            result.style.color = "#155724";
+            result.innerHTML = `
+        <strong>New hash generated!</strong><br>
+        Open <code>admin/index.html</code> in a text editor and replace the line:<br>
+        <code>const PASSWORD_HASH = "...";</code><br>
+        with:<br>
+        <code style="word-break:break-all;background:#f0f0f0;padding:4px 6px;display:inline-block;margin-top:4px;">const PASSWORD_HASH = "${hash}";</code><br>
+        Then commit & push. Your new password is now active.
+      `;
+        }
+
+        async function sha256(str) {
+            const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+        }
+
+        function showStatus(msg, type = "success") {
+            const el = document.getElementById("statusMsg");
+            el.textContent = msg;
+            el.className = "status " + type;
+            clearTimeout(window._statusTimer);
+            window._statusTimer = setTimeout(() => { el.style.display = "none"; }, 5000);
+        }
+
+        document.getElementById("searchInput").addEventListener("input", renderList);
+        document.getElementById("filterCategory").addEventListener("change", renderList);
+
+        loadProducts();
+    </script>
+</body>
+
+</html>
