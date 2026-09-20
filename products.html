@@ -15,6 +15,166 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ========== Product Detail Overlay ========== */
+        .product-detail-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 61, 46, 0.92);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            overflow-y: auto;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-detail-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .product-detail {
+            background: #fff;
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 95vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+            position: relative;
+            animation: detailIn 0.35s ease;
+        }
+
+        @keyframes detailIn {
+            from {
+                transform: scale(0.92);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .detail-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .detail-close:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .detail-image-wrap {
+            width: 100%;
+            height: 55vh;
+            min-height: 260px;
+            background: #e8e4dc;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .detail-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .detail-body {
+            padding: 1.5rem 1.5rem 2rem;
+            overflow-y: auto;
+        }
+
+        .detail-body .material-tag {
+            display: inline-block;
+            background: var(--green);
+            color: var(--cream);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .detail-body h2 {
+            color: var(--green);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .detail-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--green);
+            margin-bottom: 1rem;
+        }
+
+        .detail-desc {
+            color: #444;
+            font-size: 1rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .detail-actions {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .product-card {
+            cursor: pointer;
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+        }
+
+        @media (min-width: 768px) {
+            .product-detail {
+                flex-direction: row;
+                max-height: 85vh;
+            }
+
+            .detail-image-wrap {
+                width: 50%;
+                height: auto;
+                min-height: 400px;
+            }
+
+            .detail-body {
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -76,241 +236,23 @@
                 </div>
             </div>
 
-            <!-- Single Enquire Button at top -->
+            <!-- Enquire Button -->
             <div class="text-center" style="margin-bottom: 2rem;">
                 <a href="contact.html" class="btn btn-primary" style="padding: 0.9rem 2.2rem; font-size: 1rem;">
                     Get a Quote / Enquire Now
                 </a>
             </div>
 
-            <div class="no-results">
+            <div class="no-results" style="display:none;">
                 <p>No products found matching your search.</p>
             </div>
 
-            <!-- ========== ALUMINIUM ========== -->
-            <div class="category-section">
-                <h2 class="category-title">Aluminium</h2>
-                <div class="products-grid">
-
-                    <div class="product-card" data-material="aluminium" data-name="Aluminium Sheets">
-                        <div class="product-img">
-                            <img src="images/products/aluminium-sheets.jpg" alt="Aluminium Sheets">
-                            <span class="material-tag">Aluminium</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>Aluminium Sheets</h3>
-                            <p>High-grade aluminium sheets available in multiple thicknesses. Ideal for roofing,
-                                cladding, ducting and general fabrication.</p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="aluminium" data-name="Aluminium Coils">
-                        <div class="product-img">
-                            <img src="images/products/aluminium-coils.jpg" alt="Aluminium Coils">
-                            <span class="material-tag">Aluminium</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>Aluminium Coils</h3>
-                            <p>Continuous coils for industrial applications. Available in various alloys and tempers for
-                                rolling and forming.</p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="aluminium" data-name="Aluminium Extrusions">
-                        <div class="product-img">
-                            <img src="images/products/aluminium-extrusions.jpg" alt="Aluminium Extrusions">
-                            <span class="material-tag">Aluminium</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>Aluminium Extrusions / Profiles</h3>
-                            <p>Wide range of standard and custom profiles for windows, doors, curtain walls, railings
-                                and structural frames.</p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="aluminium" data-name="Aluminium Channels">
-                        <div class="product-img">
-                            <img src="images/products/aluminium-channels.jpg" alt="Aluminium Channels">
-                            <span class="material-tag">Aluminium</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>Aluminium Channels & Angles</h3>
-                            <p>Structural aluminium channels, angles and T-sections for framing, support systems and
-                                industrial use.</p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="aluminium" data-name="Aluminium Pipes">
-                        <div class="product-img">
-                            <img src="images/products/aluminium-pipes.jpg" alt="Aluminium Pipes">
-                            <span class="material-tag">Aluminium</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>Aluminium Pipes & Tubes</h3>
-                            <p>Round, square and rectangular aluminium tubes suitable for furniture, railings,
-                                scaffolding and structures.</p>
-                        </div>
-                    </div>
-
-                </div>
+            <!-- Products loaded from data/products.json -->
+            <div id="productsContainer">
+                <p style="text-align:center; color:#888; padding: 3rem 0;">Loading products...</p>
             </div>
 
-            <!-- ========== MILD STEEL ========== -->
-            <div class="category-section">
-                <h2 class="category-title">Mild Steel</h2>
-                <div class="products-grid">
-
-                    <div class="product-card" data-material="mild-steel" data-name="MS Plates">
-                        <div class="product-img">
-                            <img src="images/products/ms-plates.jpg" alt="MS Plates">
-                            <span class="material-tag">Mild Steel</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>MS Plates & Sheets</h3>
-                            <p>Durable mild steel plates in various thicknesses. Perfect for fabrication, base plates,
-                                and heavy structural work.</p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="mild-steel" data-name="MS Channels">
-                        <div class="product-img">
-                            <img src="images/products/ms-channels.jpg" alt="MS Channels">
-                            <span class="material-tag">Mild Steel</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>MS Channels & Beams</h3>
-                            <p>Structural steel channels, I-beams and joists for construction frameworks and industrial
-                                buildings.</p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="mild-steel" data-name="MS Angles">
-                        <div class="product-img">
-                            <img src="images/products/ms-angles.jpg" alt="MS Angles">
-                            <span class="material-tag">Mild Steel</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>MS Angles & Flats</h3>
-                            <p>Equal and unequal angles, flat bars for bracing, frames, and general fabrication needs.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="mild-steel" data-name="MS Pipes">
-                        <div class="product-img">
-                            <img src="images/products/ms-pipes.jpg" alt="MS Pipes">
-                            <span class="material-tag">Mild Steel</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>MS Pipes & Tubes</h3>
-                            <p>ERW and seamless mild steel pipes for structural, water and general engineering
-                                applications.</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- ========== STAINLESS STEEL ========== -->
-            <div class="category-section">
-                <h2 class="category-title">Stainless Steel</h2>
-                <div class="products-grid">
-
-                    <div class="product-card" data-material="stainless" data-name="SS Sheets">
-                        <div class="product-img">
-                            <img src="images/products/ss-sheets.jpg" alt="SS Sheets">
-                            <span class="material-tag">Stainless</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>Stainless Steel Sheets</h3>
-                            <p>Corrosion-resistant SS sheets (304 / 316) for kitchen equipment, architectural cladding
-                                and industrial use.</p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="stainless" data-name="SS Pipes">
-                        <div class="product-img">
-                            <img src="images/products/ss-pipes.jpg" alt="SS Pipes">
-                            <span class="material-tag">Stainless</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>Stainless Steel Pipes & Tubes</h3>
-                            <p>High-quality SS pipes for process industries, water systems, railings and decorative
-                                applications.</p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="stainless" data-name="SS Sections">
-                        <div class="product-img">
-                            <img src="images/products/ss-sections.jpg" alt="SS Sections">
-                            <span class="material-tag">Stainless</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>SS Sections & Profiles</h3>
-                            <p>Angles, channels and flat bars in stainless steel for durable and aesthetic structural
-                                work.</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- ========== SERVICES ========== -->
-            <div class="category-section">
-                <h2 class="category-title">Fabrication Services</h2>
-                <div class="products-grid">
-
-                    <div class="product-card" data-material="services" data-name="Precision Cutting">
-                        <div class="product-img">
-                            <img src="images/products/cutting.jpg" alt="Precision Cutting">
-                            <span class="material-tag">Service</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>Precision Cutting & Shearing</h3>
-                            <p>Accurate cutting of sheets and plates to your required dimensions with minimal wastage.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="services" data-name="Welding">
-                        <div class="product-img">
-                            <img src="images/products/welding.jpg" alt="Welding">
-                            <span class="material-tag">Service</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>Welding Services</h3>
-                            <p>Professional MIG / TIG / Arc welding for aluminium and steel fabrication projects.</p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="services" data-name="Custom Fabrication">
-                        <div class="product-img">
-                            <img src="images/products/fabrication.jpg" alt="Custom Fabrication">
-                            <span class="material-tag">Service</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>Custom Fabrication</h3>
-                            <p>Complete made-to-order metal fabrication – frames, structures, tanks, platforms and more.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-material="services" data-name="Delivery">
-                        <div class="product-img">
-                            <img src="images/products/delivery.jpg" alt="Delivery">
-                            <span class="material-tag">Service</span>
-                        </div>
-                        <div class="product-body">
-                            <h3>Delivery & Logistics</h3>
-                            <p>Reliable transportation of materials and finished goods within Agartala and surrounding
-                                areas.</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Single Enquire Button at bottom -->
+            <!-- Enquire Button at bottom -->
             <div class="text-center" style="margin-top: 3rem;">
                 <a href="contact.html" class="btn btn-primary" style="padding: 0.9rem 2.2rem; font-size: 1rem;">
                     Get a Quote / Enquire Now
@@ -319,6 +261,29 @@
 
         </div>
     </section>
+
+    <!-- Product Detail Overlay -->
+    <div class="product-detail-overlay" id="productDetail">
+        <div class="product-detail">
+            <button class="detail-close" id="detailClose" aria-label="Close">×</button>
+            <div class="detail-image-wrap">
+                <img id="detailImage" src="" alt="">
+            </div>
+            <div class="detail-body">
+                <span class="material-tag" id="detailCategory"></span>
+                <h2 id="detailName"></h2>
+                <div class="detail-price" id="detailPrice" style="display:none;"></div>
+                <p class="detail-desc" id="detailDesc"></p>
+                <div class="detail-actions">
+                    <a href="contact.html" class="btn btn-primary">Get a Quote</a>
+                    <a href="https://wa.me/919362970418" class="btn btn-green" target="_blank" rel="noopener"
+                        id="detailWhatsapp">
+                        Chat on WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -359,6 +324,167 @@
         title="Chat on WhatsApp">💬</a>
 
     <script src="js/script.js"></script>
+    <script>
+        let allProducts = [];
+
+        const categoryLabels = {
+            'aluminium': 'Aluminium',
+            'mild-steel': 'Mild Steel',
+            'stainless': 'Stainless Steel',
+            'services': 'Fabrication Services'
+        };
+
+        // Load products from local JSON
+        async function loadProducts() {
+            try {
+                const res = await fetch('data/products.json?t=' + Date.now());
+                if (!res.ok) throw new Error('Failed to load');
+                allProducts = await res.json();
+                allProducts.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+                renderProducts(allProducts);
+            } catch (err) {
+                document.getElementById('productsContainer').innerHTML =
+                    '<p style="text-align:center;color:#c0392b;padding:3rem 0;">Unable to load products. Please try again later.</p>';
+                console.error(err);
+            }
+        }
+
+        function renderProducts(products) {
+            const container = document.getElementById('productsContainer');
+            const categories = ['aluminium', 'mild-steel', 'stainless', 'services'];
+
+            let html = '';
+            let hasAny = false;
+
+            for (const key of categories) {
+                const items = products.filter(p => p.category === key);
+                if (items.length === 0) continue;
+                hasAny = true;
+
+                html += `
+          <div class="category-section" data-category="${key}">
+            <h2 class="category-title">${categoryLabels[key] || key}</h2>
+            <div class="products-grid">
+              ${items.map(p => `
+                <div class="product-card" data-id="${p.id}" data-material="${p.category}" data-name="${p.name.toLowerCase()}">
+                  <div class="product-img">
+                    <img src="images/products/${p.image}" alt="${p.name}" loading="lazy"
+                         onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+                    <span class="material-tag">${(categoryLabels[p.category] || p.category).split(' ')[0]}</span>
+                  </div>
+                  <div class="product-body">
+                    <h3>${p.name}</h3>
+                    <p>${p.description || ''}</p>
+                    ${p.price ? `<p style="font-weight:600;color:var(--green);margin-top:0.5rem;">₹ ${p.price}</p>` : ''}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+            }
+
+            if (!hasAny) {
+                container.innerHTML = '<p style="text-align:center;color:#888;padding:3rem 0;">No products available yet.</p>';
+            } else {
+                container.innerHTML = html;
+            }
+
+            // Attach click handlers for detail view
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = parseInt(card.dataset.id, 10);
+                    openDetail(id);
+                });
+            });
+        }
+
+        // ========== DETAIL VIEW ==========
+        const overlay = document.getElementById('productDetail');
+        const detailClose = document.getElementById('detailClose');
+
+        function openDetail(id) {
+            const p = allProducts.find(x => x.id === id);
+            if (!p) return;
+
+            document.getElementById('detailImage').src = `images/products/${p.image}`;
+            document.getElementById('detailImage').alt = p.name;
+            document.getElementById('detailCategory').textContent = categoryLabels[p.category] || p.category;
+            document.getElementById('detailName').textContent = p.name;
+            document.getElementById('detailDesc').textContent = p.description || 'No description available.';
+
+            const priceEl = document.getElementById('detailPrice');
+            if (p.price) {
+                priceEl.textContent = '₹ ' + p.price;
+                priceEl.style.display = 'block';
+            } else {
+                priceEl.style.display = 'none';
+            }
+
+            // Pre-fill WhatsApp message
+            const waText = encodeURIComponent(`Hello Northeast Aluminium,\n\nI am interested in: ${p.name}\n\nPlease share more details.`);
+            document.getElementById('detailWhatsapp').href = `https://wa.me/919362970418?text=${waText}`;
+
+            overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetail() {
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        detailClose.addEventListener('click', closeDetail);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeDetail();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDetail();
+        });
+
+        // Filter + Search
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+
+            const searchInput = document.getElementById('productSearch');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            let currentFilter = 'all';
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    applyFilter();
+                });
+            });
+
+            searchInput.addEventListener('input', applyFilter);
+
+            function applyFilter() {
+                const query = searchInput.value.toLowerCase().trim();
+                let filtered = allProducts;
+
+                if (currentFilter !== 'all') {
+                    filtered = filtered.filter(p => p.category === currentFilter);
+                }
+
+                if (query) {
+                    filtered = filtered.filter(p =>
+                        p.name.toLowerCase().includes(query) ||
+                        (p.description && p.description.toLowerCase().includes(query))
+                    );
+                }
+
+                renderProducts(filtered);
+
+                const noResults = document.querySelector('.no-results');
+                if (noResults) {
+                    noResults.style.display = filtered.length === 0 ? 'block' : 'none';
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
