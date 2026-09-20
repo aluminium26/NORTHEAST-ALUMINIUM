@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "name": "Aluminium Sheets",
+        "category": "aluminium",
+        "description": "Premium grade aluminium sheets in various thicknesses for roofing, cladding & fabrication.",
+        "price": "",
+        "image": "aluminium.jepg",
+        "sort_order": 1
+    },
+    {
+        "id": 4,
+        "name": "Iron Truss Structures",
+        "category": "mild-steel",
+        "description": "Heavy-duty MS angle truss engineered for wide-span industrial sheds, warehouses and commercial halls. Made from IS 2062-grade mild steel, precision-welded, hot-dip galvanized or epoxy-painted. Spans 10 ft–100 ft+; lead time ~2–4 weeks.",
+        "price": "On request",
+        "image": "aluminium.jpeg",
+        "sort_order": 2
+    },
+    {
+        "id": 2,
+        "name": "Aluminium Extrusions",
+        "category": "aluminium",
+        "description": "Wide range of profiles & sections for windows, doors, structures and custom designs.",
+        "price": "",
+        "image": "aluminium-extrusions.jpg",
+        "sort_order": 3
+    },
+    {
+        "id": 3,
+        "name": "MS Plates & Sheets",
+        "category": "mild-steel",
+        "description": "Durable mild steel plates ideal for fabrication, structural work and heavy-duty applications.",
+        "price": "",
+        "image": "ms-plates.jpg",
+        "sort_order": 4
+    }
+]
